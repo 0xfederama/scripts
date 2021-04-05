@@ -12,18 +12,24 @@ try:
 except FileNotFoundError:
 	timers = {}
 
-print("Commands:\n   ls -> list all timers\n   start timername -> start the timer timername\n   stop -> stop the last timer\n   rm timername -> remove the timer timername\n   quit")
+print("Commands:\n   ls -> list all timers\n   start \'timername\' -> start the timer timername\n   stop -> stop the last timer\n   rm \'timername\' -> delete the timer timername\n   quit")
 started = False
 
 while True:
 	command = str(input("\033[1m$> \033[0m"))
-	if command=="ls":
+	if command=="":
+		continue
+	elif command=="ls":
 		if not timers:
 			print("No timers created")
 		else:
-			print(timers)
+			for x in timers:
+				print(f"{x}: {timers[x]} minutes")
 	elif command=="quit":
-		break
+		if started is True:
+			print("You have to stop the timer before quitting")
+		else:
+			break
 	else:
 		splitted_command = command.split()
 		if splitted_command[0]=="start":
@@ -33,6 +39,7 @@ while True:
 			start = time.time()
 			started = True
 			timer_name = splitted_command[1]
+			timers[timer_name] = timers.get(timer_name, 0)
 			print(f"Timer {timer_name} started")
 		elif splitted_command[0]=="stop":
 			if started is False:
@@ -45,7 +52,11 @@ while True:
 			timers[timer_name] = timers.get(timer_name, 0)+interval
 			serialize(timers)
 		elif splitted_command[0]=="rm":
-			timers.pop(splitted_command[1], None)
-			serialize(timers)
+			if splitted_command[1]==timer_name:
+				print("You cannot remove the timer that is running right now")
+			else:
+				timers.pop(splitted_command[1], None)
+				serialize(timers)
+				print("Timer deleted")
 		else:
 			print("This command does not exist")
