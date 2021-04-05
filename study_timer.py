@@ -12,7 +12,7 @@ try:
 except FileNotFoundError:
 	timers = {}
 
-print("Commands:\n   ls: list all timers\n   start timername: start the timer timername\n   stop: stop the last timer\n   rm timername: remove the timer timername\n   quit")
+print("Commands:\n   ls -> list all timers\n   start timername -> start the timer timername\n   stop -> stop the last timer\n   rm timername -> remove the timer timername\n   quit")
 started = False
 
 while True:
@@ -37,7 +37,7 @@ while True:
 		elif splitted_command[0]=="stop":
 			if started is False:
 				print("Timer was not started")
-				continue				
+				continue
 			end = time.time()
 			interval = int((end-start)/60)
 			print(f"You studied for {interval} minutes")
@@ -47,3 +47,5 @@ while True:
 		elif splitted_command[0]=="rm":
 			timers.pop(splitted_command[1], None)
 			serialize(timers)
+		else:
+			print("This command does not exist")
