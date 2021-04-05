@@ -52,11 +52,14 @@ while True:
 			timers[timer_name] = timers.get(timer_name, 0)+interval
 			serialize(timers)
 		elif splitted_command[0]=="rm":
-			if splitted_command[1]==timer_name:
-				print("You cannot remove the timer that is running right now")
-			else:
-				timers.pop(splitted_command[1], None)
+			if started is True:
+				if splitted_command[1]==timer_name:
+					print("You cannot remove the timer that is running right now")
+					continue
+			if timers.pop(splitted_command[1], -1) != -1:
 				serialize(timers)
 				print("Timer deleted")
+			else:
+				print("Timer not found")
 		else:
 			print("This command does not exist")
