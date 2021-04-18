@@ -17,6 +17,7 @@ started = False
 
 while True:
 	command = str(input("\033[1m$> \033[0m"))
+	command = command.strip()
 	if command=="":
 		continue
 	elif command=="ls":
